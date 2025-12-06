@@ -4,45 +4,72 @@ session_start(); // Khởi tạo session ngay từ đầu
 // Import file cấu hình Database
 require_once './config/Database.php';
 
-$url = isset($_GET['url']) ? $_GET['url'] : null;
+// --- PHẦN XỬ LÝ ROUTING (ĐỊNH TUYẾN) ---
 
-if ($url != null) {
-    $url = rtrim($url, '/'); // Cắt dấu / thừa ở cuối
-    $url = explode('/', $url); // Tách chuỗi thành mảng
-} else {
-    // Nếu không có url thì mặc định vào trang chủ
-    $url = ['home', 'index'];
+$controllerName = 'HomeController'; // Mặc định
+$action = 'index';                  // Mặc định
+$params = [];
+
+// TRƯỜNG HỢP 1: Dùng URL thân thiện (VD: /admin/manageCategories)
+if (isset($_GET['url'])) {
+    $url = rtrim($_GET['url'], '/');
+    $url = explode('/', $url);
+
+    // Lấy Controller
+    if (isset($url[0]) && $url[0] != "") {
+        $controllerName = ucfirst($url[0]) . 'Controller';
+    }
+
+    // Lấy Action
+    if (isset($url[1]) && $url[1] != "") {
+        $action = $url[1];
+    }
+
+    // Lấy tham số
+    if (count($url) > 2) {
+        $params = array_values(array_slice($url, 2));
+    }
+} 
+// TRƯỜNG HỢP 2: Dùng Query String (VD: index.php?controller=admin&action=manageCategories)
+elseif (isset($_GET['controller'])) {
+    $controllerName = ucfirst($_GET['controller']) . 'Controller';
+    
+    if (isset($_GET['action'])) {
+        $action = $_GET['action'];
+    }
+    
+    // Nếu có id truyền vào URL thì đưa vào params (VD: &id=1)
+    // Lưu ý: Các hàm trong controller cần viết kiểu function deleteCategory() { $id = $_GET['id']; ... } 
+    // thay vì nhận tham số truyền vào nếu dùng cách này.
+    // code controller Admin dùng $_GET['id'] bên trong hàm nên không ảnh hưởng.
 }
 
-// 1. Xác định Controller (Phần tử đầu tiên của mảng)
-// Quy ước: Tên controller viết hoa chữ cái đầu + "Controller"
-// Ví dụ: courses -> CourseController
-$controllerName = isset($url[0]) ? ucfirst($url[0]) . 'Controller' : 'HomeController';
+// --- PHẦN GỌI CONTROLLER ---
 
-// Đường dẫn file controller
 $controllerPath = "./controllers/" . $controllerName . ".php";
 
-// Kiểm tra xem file controller có tồn tại không
+// Kiểm tra file controller có tồn tại không
 if (file_exists($controllerPath)) {
     require_once $controllerPath;
     
-    // Khởi tạo Controller
-    $controller = new $controllerName();
+    // Kiểm tra class có tồn tại không
+    if (class_exists($controllerName)) {
+        $controller = new $controllerName();
 
-    // 2. Xác định Action (Hàm trong controller - Phần tử thứ 2)
-    $action = isset($url[1]) ? $url[1] : 'index';
-
-    // 3. Xác định tham số (Phần tử thứ 3 trở đi)
-    $params = array_values(array_slice($url, 2));
-
-    // Kiểm tra xem method có tồn tại trong Controller không
-    if (method_exists($controller, $action)) {
-        // Gọi hàm và truyền tham số
-        call_user_func_array([$controller, $action], $params);
+        // Kiểm tra method có tồn tại trong Controller không
+        if (method_exists($controller, $action)) {
+            // Gọi hành động
+            // Lưu ý: Nếu dùng params từ URL rewrite thì truyền vào, nếu không thì gọi hàm không tham số
+            call_user_func_array([$controller, $action], $params);
+        } else {
+            // Xử lý lỗi Action không tồn tại
+            die("Lỗi 404: Không tìm thấy Action '{$action}' trong Controller '{$controllerName}'");
+        }
     } else {
-        echo "Lỗi 404: Không tìm thấy Action '{$action}' trong '{$controllerName}'";
+        die("Lỗi 500: Class '{$controllerName}' không tìm thấy trong file.");
     }
 } else {
-    echo "Lỗi 404: Không tìm thấy Controller '{$controllerName}'";
+    // Xử lý lỗi Controller không tồn tại
+    die("Lỗi 404: Không tìm thấy Controller '{$controllerName}' (Path: {$controllerPath})");
 }
 ?>
