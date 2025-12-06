@@ -1,0 +1,66 @@
+
+.google-footer {
+    background-color: #f1f3f4; /* Màu nền xám nhạt chuẩn Google */
+    color: #5f6368; /* Màu chữ xám vừa */
+    font-size: 14px; /* Font chữ nhỏ gọn */
+    border-top: 1px solid #dadce0;
+}
+
+.footer-heading {
+    color: #202124; /* Tiêu đề màu đậm hơn */
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-desc {
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+/* Style cho các liên kết trong footer */
+.footer-link {
+    color: #5f6368;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #1a73e8; /* Hover ra màu xanh Google */
+}
+
+/* Style cho list icon liên hệ */
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.footer-icon {
+    width: 20px;
+    color: #1a73e8; /* Icon màu xanh */
+    margin-right: 10px;
+}
+
+/* Đường kẻ chia cách phần copyright */
+.footer-divider {
+    border-top: 1px solid #dadce0;
+    margin: 24px 0;
+}
+
+.copyright-text {
+    font-size: 13px;
+}
+
+.copyright-link {
+    color: #202124;
+    font-weight: 500;
+    text-decoration: none;
+}
+.copyright-link:hover {
+    color: #1a73e8;
+}

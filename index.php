@@ -72,4 +72,5 @@ if (file_exists($controllerPath)) {
     // Xử lý lỗi Controller không tồn tại
     die("Lỗi 404: Không tìm thấy Controller '{$controllerName}' (Path: {$controllerPath})");
 }
-?>
+?> 
+

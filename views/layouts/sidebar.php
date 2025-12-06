@@ -1,85 +1,83 @@
 <?php
-// Đảm bảo user đã đăng nhập mới hiện sidebar này
+// views/layouts/sidebar.php
+
+// Đảm bảo user đã đăng nhập
 if (!isset($_SESSION['user'])) return;
 
-
 $role = $_SESSION['user']['role']; // 0: Student, 1: Instructor, 2: Admin
+
+// Hàm kiểm tra link active (để tô màu xanh)
+function isActive($path) {
+    $current_uri = $_SERVER['REQUEST_URI'];
+    // So sánh tương đối, nếu URL hiện tại chứa path thì trả về class active
+    return (strpos($current_uri, $path) !== false) ? 'active' : '';
+}
 ?>
 
 
-<div class="sidebar p-3 d-none d-md-block h-100">
-    <h5 class="text-primary mb-4 text-center">Menu Quản Lý</h5>
-    <ul class="nav flex-column">
-       
-        <?php if ($role == 0): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/student/dashboard.php">
-                    <i class="fas fa-home me-2"></i> Tổng quan
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/student/my_courses.php">
-                    <i class="fas fa-book-reader me-2"></i> Khóa học của tôi
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/student/course_progress.php">
-                    <i class="fas fa-chart-line me-2"></i> Tiến độ học tập
-                </a>
-            </li>
 
+<div class="sidebar-wrapper d-none d-md-block">
+    
+    <div class="sidebar-heading">Quản lý</div>
+    
+    <div class="nav flex-column">
+        
+        <?php if ($role == 0): ?>
+            <a class="sidebar-link <?= isActive('/student/dashboard.php') ?>" href="/BTTH2/views/student/dashboard.php">
+                <div class="sidebar-icon"><i class="fas fa-home"></i></div>
+                <span>Tổng quan</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/student/my_courses.php') ?>" href="/BTTH2/views/student/my_courses.php">
+                <div class="sidebar-icon"><i class="fas fa-book-reader"></i></div>
+                <span>Khóa học của tôi</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/student/course_progress.php') ?>" href="/BTTH2/views/student/course_progress.php">
+                <div class="sidebar-icon"><i class="fas fa-chart-line"></i></div>
+                <span>Tiến độ học tập</span>
+            </a>
 
         <?php elseif ($role == 1): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/instructor/dashboard.php">
-                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/instructor/course/manage.php">
-                    <i class="fas fa-chalkboard-teacher me-2"></i> Quản lý khóa học
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/instructor/students/list.php">
-                    <i class="fas fa-users me-2"></i> Học viên của tôi
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/instructor/materials/upload.php">
-                    <i class="fas fa-upload me-2"></i> Tài liệu
-                </a>
-            </li>
-
+            <a class="sidebar-link <?= isActive('/instructor/dashboard.php') ?>" href="/BTTH2/views/instructor/dashboard.php">
+                <div class="sidebar-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <span>Dashboard</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/instructor/course/manage.php') ?>" href="/BTTH2/views/instructor/course/manage.php">
+                <div class="sidebar-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <span>Quản lý khóa học</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/instructor/students/list.php') ?>" href="/BTTH2/views/instructor/students/list.php">
+                <div class="sidebar-icon"><i class="fas fa-users"></i></div>
+                <span>Học viên của tôi</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/instructor/materials/upload.php') ?>" href="/BTTH2/views/instructor/materials/upload.php">
+                <div class="sidebar-icon"><i class="fas fa-upload"></i></div>
+                <span>Tài liệu</span>
+            </a>
 
         <?php elseif ($role == 2): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/admin/dashboard.php">
-                    <i class="fas fa-cogs me-2"></i> Tổng quan hệ thống
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/admin/users/manage.php">
-                    <i class="fas fa-user-shield me-2"></i> Quản lý người dùng
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/admin/categories/list.php">
-                    <i class="fas fa-list me-2"></i> Danh mục khóa học
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/BTTH2/views/admin/reports/statistics.php">
-                    <i class="fas fa-chart-bar me-2"></i> Báo cáo thống kê
-                </a>
-            </li>
+            <a class="sidebar-link <?= isActive('/admin/dashboard.php') ?>" href="/BTTH2/views/admin/dashboard.php">
+                <div class="sidebar-icon"><i class="fas fa-cogs"></i></div>
+                <span>Tổng quan hệ thống</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/admin/users/manage.php') ?>" href="/BTTH2/views/admin/users/manage.php">
+                <div class="sidebar-icon"><i class="fas fa-user-shield"></i></div>
+                <span>Quản lý người dùng</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/admin/categories/list.php') ?>" href="/BTTH2/views/admin/categories/list.php">
+                <div class="sidebar-icon"><i class="fas fa-list"></i></div>
+                <span>Danh mục khóa học</span>
+            </a>
+            <a class="sidebar-link <?= isActive('/admin/reports/statistics.php') ?>" href="/BTTH2/views/admin/reports/statistics.php">
+                <div class="sidebar-icon"><i class="fas fa-chart-bar"></i></div>
+                <span>Báo cáo thống kê</span>
+            </a>
         <?php endif; ?>
 
+        <hr style="margin: 12px 0; border-top: 1px solid #dadce0;">
 
-        <li class="nav-item mt-3">
-             <a class="nav-link text-danger" href="/BTTH2/controllers/AuthController.php?action=logout">
-                <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
-            </a>
-        </li>
-    </ul>
+        <a class="sidebar-link text-danger" href="/BTTH2/controllers/AuthController.php?action=logout">
+            <div class="sidebar-icon"><i class="fas fa-sign-out-alt"></i></div>
+            <span>Đăng xuất</span>
+        </a>
+    </div>
 </div>
