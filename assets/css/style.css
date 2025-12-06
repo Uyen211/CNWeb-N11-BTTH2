@@ -1,0 +1,141 @@
+
+:root {
+    /* Mã màu bạn cung cấp */
+    --primary-color: #006BFF;  /* Xanh đậm - Chủ đạo (Navbar, Footer, Nút chính) */
+    --primary-hover: #08C2FF;  /* Xanh sáng hơn - Hover, secondary BG */
+    --accent-yellow: #FFF100;  /* Vàng rực - Điểm nhấn (Nút Đăng ký, CTA) */
+    --bg-light: #BCF2F6;       /* Xanh/Cyan rất nhạt - Nền phụ, Sidebar Active */
+    
+    /* Màu bổ trợ cho tính dễ đọc */
+    --text-dark: #1f304f;      /* Màu chữ đậm (gần như đen) */
+    --text-white: #ffffff;
+    --bg-body: #f7f9fc;        /* Nền trắng xám nhẹ */
+}
+
+body {
+    background-color: var(--bg-body);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+}
+
+/* =========================================
+   2. NAVBAR (THANH MENU TRÊN CÙNG)
+   ========================================= */
+.navbar-custom {
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0, 107, 255, 0.4);
+}
+
+.navbar-custom .navbar-brand {
+    color: var(--text-white);
+    font-weight: 700;
+}
+
+.navbar-custom .nav-link {
+    color: var(--text-white) !important;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--accent-yellow) !important; /* Di chuột đổi màu vàng rực */
+}
+.text-accent {
+    color: var(--accent-yellow) !important; 
+}
+
+/* =========================================
+   3. SIDEBAR (THANH MENU BÊN TRÁI)
+   ========================================= */
+.sidebar {
+    min-height: 100vh;
+    background-color: var(--text-white);
+    border-right: 1px solid var(--bg-light);
+}
+
+.sidebar .nav-link {
+    color: var(--text-dark);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+/* Khi di chuột vào hoặc đang chọn */
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+    background-color: var(--bg-light); /* Nền xanh rất nhạt */
+    color: var(--primary-color); /* Chữ xanh đậm */
+    font-weight: 600;
+}
+
+/* =========================================
+   4. CÁC LOẠI NÚT BẤM (BUTTONS)
+   ========================================= */
+
+/* Nút chính (Màu vàng rực - CTA) */
+.btn-accent {
+    background-color: var(--accent-yellow);
+    color: var(--text-dark); /* Chữ màu tối để dễ đọc trên nền vàng sáng */
+    font-weight: 700;
+    border: none;
+    padding: 8px 20px;
+    box-shadow: 0 4px 10px rgba(255, 241, 0, 0.5);
+    transition: transform 0.2s;
+}
+
+.btn-accent:hover {
+    background-color: #ffe600; /* Vàng đậm hơn xíu */
+    transform: scale(1.05);
+    color: var(--text-dark);
+}
+
+/* Nút phụ (Màu xanh chủ đạo) */
+.btn-primary-custom {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-hover); /* Chuyển sang xanh sáng hơn */
+    border-color: var(--primary-hover);
+    color: var(--text-white);
+}
+
+/* =========================================
+   5. CARDS (KHUNG KHÓA HỌC)
+   ========================================= */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 107, 255, 0.25); /* Bóng màu xanh */
+}
+
+.card-header {
+    background-color: var(--bg-light);
+    border-bottom: none;
+    color: var(--text-dark);
+}
+
+/* =========================================
+   6. FOOTER
+   ========================================= */
+.footer-custom {
+    background-color: var(--primary-color);
+    color: var(--text-white);
+}
+.footer-custom a {
+    color: var(--text-white);
+}
+.footer-custom a:hover {
+    color: var(--accent-yellow) !important;
+}
