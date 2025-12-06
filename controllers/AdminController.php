@@ -17,10 +17,10 @@ class AdminController {
 
         // --- AUTHENTICATION CHECK (Optional) ---
         // Bạn có thể bỏ comment đoạn này để bảo mật
-        // if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 1) { 
-        //     header("Location: index.php?controller=auth&action=login");
-        //     exit();
-        // }
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 1) { 
+            header("Location: index.php?controller=auth&action=login");
+            exit();
+        }
 
         // --- DEPENDENCY INJECTION ---
         // Khởi tạo kết nối DB và Model theo chuẩn OOP

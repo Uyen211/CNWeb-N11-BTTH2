@@ -31,7 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <nav class="navbar navbar-expand-lg navbar-custom shadow-sm sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/onlinecourse/index.php">
-                <i class="fas fa-graduation-cap fa-lg me-2 text-warning"></i> EduOnline
+                <i class="fas fa-graduation-cap fa-lg me-2 text-accent"></i> EduOnline
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
