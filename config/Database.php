@@ -1,9 +1,7 @@
 <?php
-// File: config/Database.php
 
 class Database {
     // Thông tin cấu hình Database
-    // Lưu ý: Nếu dùng XAMPP mặc định thì pass để trống, user là root
     private $host = 'localhost';
     private $db_name = 'CSDLonlinecourse';
     private $username = 'root'; 
