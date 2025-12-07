@@ -48,7 +48,7 @@ class CourseController {
             // Render View: Gọi Header/Sidebar/Footer TẠI ĐÂY
             require_once 'views/layouts/header.php';
             require_once 'views/layouts/sidebar.php';
-            require_once 'views/instructor/course/manage.php';
+            require_once 'views/instructor/my_courses.php';
             require_once 'views/layouts/footer.php';
         } else {
              // Logic cho Student (chưa được phát triển, cần phát triển tiếp vào đây)
