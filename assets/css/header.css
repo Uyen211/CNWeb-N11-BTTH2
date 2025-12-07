@@ -1,0 +1,191 @@
+:root {
+    --header-height: 70px; /* Định nghĩa chiều cao chuẩn */
+    --google-blue: #1a73e8;
+    --google-text: #5f6368;
+    --google-bg-gray: #f1f3f4;
+}
+
+/* --- 1. CẤU TRÚC CƠ BẢN --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #202124;
+    /* QUAN TRỌNG: Đẩy nội dung xuống đúng bằng chiều cao Header */
+    padding-top: var(--header-height); 
+}
+
+/* --- 2. NAVBAR STYLE --- */
+.navbar-google {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dadce0;
+    height: var(--header-height); /* Chiều cao cố định */
+    padding: 0; /* Reset padding để dễ căn giữa bằng Flex */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); 
+}
+
+/* Căn giữa tất cả các phần tử trong Navbar */
+.navbar-google .container-fluid {
+    height: 100%;
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+/* --- 3. LOGO --- */
+.navbar-brand {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--google-text) !important;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Khoảng cách giữa icon và chữ */
+    height: 100%;
+}
+
+.navbar-brand i {
+    font-size: 26px;
+    color: var(--google-blue) !important;
+}
+
+/* --- 4. MENU LINKS (DESKTOP) --- */
+.nav-link-google {
+    color: var(--google-text) !important;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 8px 16px !important;
+    border-radius: 4px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    height: 40px; /* Chiều cao nút menu */
+}
+
+.nav-link-google:hover, .nav-link-google.active {
+    color: var(--google-blue) !important;
+    background-color: #f0f5ff;
+}
+
+/* --- 5. SEARCH BAR --- */
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-input-google {
+    background-color: var(--google-bg-gray);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    height: 46px;
+    padding-left: 48px;
+    font-size: 16px;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.search-input-google:focus {
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--google-text);
+}
+
+/* --- 6. USER AVATAR & DROPDOWN --- */
+/* Căn chỉnh khu vực User */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--google-blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.avatar-btn {
+    background: transparent;
+    border: none;
+    padding: 2px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    /* Sửa lỗi lệch nút dropdown */
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-btn:hover {
+    background-color: #f1f3f4;
+}
+
+/* Ẩn mũi tên dropdown mặc định */
+.dropdown-toggle.hide-arrow::after {
+    display: none !important;
+}
+
+/* Menu con */
+.dropdown-menu-google {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 8px 0;
+    right: 0; /* Căn phải */
+}
+
+.dropdown-item-google {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #3c4043;
+}
+.dropdown-item-google:hover {
+    background-color: #f1f3f4;
+}
+
+/* --- 7. FIX MOBILE RESPONSIVE --- */
+@media (max-width: 991px) {
+    /* Menu xổ xuống trên Mobile */
+    .navbar-collapse {
+        position: absolute;
+        top: var(--header-height); /* Bắt đầu ngay dưới header */
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        padding: 15px;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        border-top: 1px solid #eee;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Đẩy thanh search xuống cho thoáng */
+    .search-wrapper {
+        margin: 15px 0;
+        max-width: 100%;
+    }
+
+    /* Căn chỉnh lại khu vực user trên mobile */
+    .user-section {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        justify-content: flex-start; /* Căn trái trên mobile */
+    }
+}

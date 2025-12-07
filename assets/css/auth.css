@@ -1,0 +1,156 @@
+/* assets/css/auth.css */
+
+/* 1. Hình nền bầu trời (Giả lập giống ảnh mẫu) */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Gradient xanh da trời nhạt */
+    /* background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);  */
+    /* Nếu bạn có ảnh mây thật thì dùng dòng dưới: */
+     background: url('../imgs/login_wallapper.jpg') no-repeat center center/cover; 
+    padding: 20px;
+}
+
+/* 2. Thẻ Card chứa Form */
+.auth-card {
+    background: rgba(255, 255, 255, 0.85); /* Giảm độ đục xuống 0.85 để hơi trong suốt */
+    backdrop-filter: blur(7px); /* Làm mờ nền đằng sau card (hiệu ứng kính) */
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); /* Đổ bóng xa hơn cho cảm giác trôi nổi */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+/* 3. Logo & Tiêu đề */
+.auth-icon-top {
+    width: 50px;
+    height: 50px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 20px;
+    color: #333;
+}
+
+.auth-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* 4. Input Fields (Trông giống ảnh: Nền xám, không viền) */
+.input-group-custom {
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    padding: 5px 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.input-group-custom:focus-within {
+    background-color: #fff;
+    border-color: #a1c4fd; /* Viền xanh khi bấm vào */
+    box-shadow: 0 0 0 4px rgba(161, 196, 253, 0.2);
+}
+
+.input-icon {
+    color: #9ca3af;
+    margin-right: 10px;
+}
+
+.form-control-custom {
+    border: none;
+    background: transparent;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    color: #333;
+    outline: none;
+}
+
+.form-control-custom::placeholder {
+    color: #9ca3af;
+}
+
+/* Icon mắt (ẩn hiện pass) */
+/* .toggle-password {
+    cursor: pointer;
+    color: #9ca3af;
+} */
+
+/* 5. Nút bấm (Button) */
+.btn-auth-primary {
+    background-color: #1f2937; /* Màu đen xám đậm giống ảnh */
+    color: white;
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-auth-primary:hover {
+    background-color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 6. Social Login (Google, FB, Apple) */
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px dashed #e5e7eb;
+    position: relative;
+}
+
+.social-label {
+    position: absolute;
+    top: -10px;
+    background: #fff; /* Để che đường kẻ */
+    padding: 0 10px;
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+.btn-social {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: white;
+    color: #333;
+    text-decoration: none;
+}
+
+.btn-social:hover {
+    background-color: #f9fafb;
+    transform: translateY(-2px);
+}

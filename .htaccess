@@ -1,0 +1,12 @@
+# Nhiệm vụ của nó là biến các đường dẫn đẹp (VD: onlinecourse/home/index) 
+# thành đường dẫn mà code hiểu được, và chặn người ngoài xem danh sách file.
+
+Options -Indexes
+RewriteEngine On
+
+# Kiểm tra nếu request không phải là file thực tế (!-f) hoặc thư mục thực tế (!-d)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển hướng mọi request về file index.php?url=...
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
