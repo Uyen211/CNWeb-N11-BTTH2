@@ -1,0 +1,193 @@
+
+:root {
+    --google-blue: #1a73e8;
+    --google-blue-hover: #174ea6;
+    --google-text: #5f6368;
+    --google-text-dark: #202124;
+    --google-bg-hover: #f0f5ff;
+    --google-gray-bg: #f1f3f4;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--google-text-dark);
+    /* --- QUAN TRỌNG: Đẩy nội dung xuống để không bị Header che mất --- */
+    padding-top: 66px; 
+}
+
+/* --- NAVBAR STYLE --- */
+.navbar-google {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dadce0;
+    padding: 8px 0;
+    min-height: 65px; 
+    
+    /* --- CỐ ĐỊNH HEADER (FIXED) --- */
+    /* fixed-top của Bootstrap đã có sẵn, nhưng ta thêm shadow để đẹp hơn khi cuộn */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08); 
+}
+
+.navbar-brand {
+    font-size: 22px;
+    color: var(--google-text-dark) !important;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+}
+
+/* --- MENU LINK HOVER EFFECT --- */
+.nav-link-google {
+    color: var(--google-text) !important;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 12px !important;
+    border-radius: 4px;
+    margin: 0 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-link-google:hover {
+    color: var(--google-blue) !important;
+    background-color: var(--google-bg-hover);
+}
+
+.nav-link-google.active {
+    color: var(--google-blue) !important;
+}
+
+/* --- SEARCH BAR STYLE --- */
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+}
+
+.search-input-google {
+    background-color: var(--google-gray-bg);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    height: 46px;
+    padding-left: 48px;
+    font-size: 16px;
+    width: 100%;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.search-input-google:focus {
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+    border-color: transparent;
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--google-text);
+    font-size: 18px;
+}
+
+/* --- BUTTONS & USER --- */
+.btn-google-text {
+    color: var(--google-blue);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-google-text:hover {
+    background-color: rgba(26,115,232,0.1);
+    color: var(--google-blue-hover);
+}
+
+.btn-google-primary {
+    background-color: var(--google-blue);
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 9px 24px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 1px 2px rgba(60,64,67,0.3);
+    transition: all 0.2s;
+}
+
+.btn-google-primary:hover {
+    background-color: var(--google-blue-hover);
+    box-shadow: 0 2px 4px rgba(60,64,67,0.3);
+    color: white;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--google-blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.avatar-btn {
+    border: none;
+    background: none;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.avatar-btn:hover {
+    background-color: rgba(60,64,67,0.08);
+}
+
+.dropdown-menu-google {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 8px 0;
+    min-width: 250px;
+}
+
+/* --- FIX MOBILE MENU --- */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: #ffffff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #eee;
+        z-index: 1000;
+        /* Giới hạn chiều cao và cho phép cuộn nếu menu quá dài trên mobile */
+        max-height: 80vh; 
+        overflow-y: auto;
+    }
+
+    .search-wrapper {
+        margin: 15px 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 5px;
+    }
+    
+    .d-flex.align-items-center {
+        flex-wrap: wrap;
+        margin-top: 10px;
+        border-top: 1px solid #f1f3f4;
+        padding-top: 10px;
+    }
+}

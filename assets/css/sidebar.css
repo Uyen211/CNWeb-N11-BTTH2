@@ -1,0 +1,70 @@
+
+.sidebar-wrapper {
+    background-color: #fff;
+    border-right: 1px solid #dadce0; /* Đường kẻ ngăn cách với nội dung chính */
+    height: 100%;
+    padding: 16px 12px;
+}
+
+.sidebar-heading {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #5f6368;
+    margin: 16px 0 8px 12px; /* Căn chỉnh lề cho tiêu đề nhóm */
+}
+
+/* Style cho từng item */
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px; /* Khoảng cách rộng rãi */
+    margin-bottom: 4px; /* Khoảng cách giữa các dòng */
+    color: #5f6368; /* Màu chữ xám chuẩn Google */
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 0 24px 24px 0; 
+    /* Hoặc dùng border-radius: 8px; nếu muốn bo cả 4 góc */
+    border-radius: 8px; 
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar-icon {
+    width: 24px; /* Cố định chiều rộng icon để chữ thẳng hàng */
+    font-size: 18px;
+    margin-right: 12px;
+    color: #5f6368;
+    display: flex;
+    justify-content: center;
+}
+
+/* Hiệu ứng Hover */
+.sidebar-link:hover {
+    background-color: #f1f3f4;
+    color: #202124;
+}
+
+.sidebar-link:hover .sidebar-icon {
+    color: #202124;
+}
+
+/* Trạng thái Active (Đang ở trang đó) */
+.sidebar-link.active {
+    background-color: #e8f0fe;
+    color: #1a73e8; 
+}
+
+.sidebar-link.active .sidebar-icon {
+    color: #1a73e8; 
+}
+
+/* Nút đăng xuất */
+.sidebar-link.text-danger:hover {
+    background-color: #fce8e6;
+    color: #d93025;
+}
+.sidebar-link.text-danger .sidebar-icon {
+    color: #d93025;
+}
