@@ -4,6 +4,11 @@ session_start(); // Khởi tạo session ngay từ đầu
 // Import file cấu hình Database
 require_once './config/Database.php';
 
+$_SESSION['user'] = [
+    'id' => 2,
+    'role' => 1
+]; // Giả lập user đã đăng nhập với role Instructor
+
 // --- PHẦN XỬ LÝ ROUTING (ĐỊNH TUYẾN) ---
 
 $controllerName = 'HomeController'; // Mặc định
