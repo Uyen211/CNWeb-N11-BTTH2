@@ -1,36 +1,37 @@
 <?php
-
 class Database {
     // Thông tin cấu hình Database
     private $host = 'localhost';
-    private $db_name = 'CSDLonlinecourse';
+    private $db_name = 'CSDLonlinecourse'; // Đảm bảo tên DB này đúng
     private $username = 'root'; 
     private $password = ''; 
-    public $conn;
+    
+    // 1. Đổi tên biến $conn thành $pdo (để khớp với User.php)
+    public $pdo;
 
-    // Phương thức kết nối
-    public function connect() {
-        $this->conn = null;
+    // 2. Đổi tên hàm connect() thành __construct()
+    // Để khi gọi new Database() là nó tự động kết nối luôn
+    public function __construct() {
+        $this->pdo = null;
 
         try {
-            // Chuỗi kết nối DSN cho MySQL
-            // charset=utf8 để không bị lỗi font tiếng Việt
+            // Chuỗi kết nối
             $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8";
             
             // Tùy chọn PDO
             $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Báo lỗi dạng Exception dễ bắt lỗi
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // Lấy dữ liệu dạng mảng kết hợp
-                PDO::ATTR_EMULATE_PREPARES => false, // Tăng bảo mật chống SQL Injection
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
             ];
 
-            $this->conn = new PDO($dsn, $this->username, $this->password, $options);
+            // Kết nối và gán vào biến $pdo
+            $this->pdo = new PDO($dsn, $this->username, $this->password, $options);
             
         } catch(PDOException $e) {
             echo "Lỗi kết nối Database: " . $e->getMessage();
+            die(); // Dừng chương trình nếu lỗi
         }
-
-        return $this->conn;
     }
 }
 ?>

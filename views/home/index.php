@@ -36,11 +36,11 @@ include_once dirname(__DIR__) . '/layouts/header.php';
             
             <div class="col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
                 <div class="hero-image-container">
-                    <img src="<?= $base_url ?? '' ?>/assets/imgs/homepage_first.png" 
+                    <img src="<?= $base_url ?? '/onlinecourse' ?>/assets/imgs/homepage_first.png" 
                          alt="Học trực tuyến minh họa" 
                          class="hero-img img-fluid"
                          onerror="this.src='https://cdni.iconscout.com/illustration/premium/thumb/online-education-4388301-3655160.png'"> 
-                         </div>
+                </div>
             </div>
         </div>
     </div>

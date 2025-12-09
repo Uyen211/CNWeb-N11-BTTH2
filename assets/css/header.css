@@ -1,4 +1,3 @@
-
 :root {
     --google-blue: #1a73e8;
     --google-blue-hover: #174ea6;
@@ -35,11 +34,13 @@ body {
     display: flex;
     align-items: center;
     letter-spacing: -0.5px;
+    text-decoration: none;
 }
 
 .navbar-brand i {
     font-size: 26px; /* Icon to hơn chữ một chút */
     color: #1a73e8 !important; /* Màu xanh Google */
+    margin-right: 8px;
 }
 
 .navbar-brand:hover {
@@ -177,6 +178,7 @@ body {
 .dropdown-user-info {
     border-bottom: 1px solid #e5e7eb;
     margin-bottom: 8px;
+    padding: 0 20px 8px;
 }
 
 .dropdown-item-google {

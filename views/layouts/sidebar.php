@@ -2,7 +2,7 @@
 // 1. Logic lấy Role chuẩn (Ưu tiên session phẳng, fallback về mảng user)
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : (isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : -1);
 
-// Nếu chưa đăng nhập -> Không hiện sidebar -> Chỉ mở thẻ main full màn hình
+// Nếu chưa đăng nhập -> Không hiện sidebar -> Chỉ mở thẻ main full màn hình để chứa nội dung Login/Register
 if ($role == -1) {
     echo '<main class="container-fluid py-4" style="margin-top: 60px;">'; 
     return;
@@ -12,6 +12,7 @@ if ($role == -1) {
 function isAct($ctrl, $act = '') {
     $c = $_GET['controller'] ?? 'home';
     $a = $_GET['action'] ?? 'index';
+    // Kiểm tra trùng Controller và (Action rỗng hoặc Action trùng)
     if ($c == $ctrl && ($act == '' || $a == $act)) {
         return 'active-item'; // Class riêng để style
     }
@@ -19,68 +20,13 @@ function isAct($ctrl, $act = '') {
 }
 ?>
 
-<style>
-    /* Sidebar nằm dưới Header (Header cao khoảng 60px) */
-    #sidebarMenu {
-        top: 60px; 
-        height: calc(100vh - 60px);
-        padding-top: 1rem;
-        overflow-y: auto;
-        z-index: 100;
-        box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    }
-
-    /* Style từng item */
-    .nav-link-custom {
-        display: flex;
-        align-items: center;
-        padding: 10px 15px;
-        color: #444;
-        text-decoration: none;
-        border-radius: 0 50px 50px 0; /* Bo tròn 1 đầu kiểu Google */
-        margin-bottom: 5px;
-        font-weight: 500;
-        transition: all 0.2s;
-    }
-
-    .nav-link-custom:hover {
-        background-color: #f1f3f4;
-        color: #1a73e8;
-    }
-
-    .nav-link-custom i {
-        width: 24px;
-        text-align: center;
-        margin-right: 10px;
-        color: #5f6368;
-    }
-
-    /* Trạng thái đang chọn */
-    .active-item {
-        background-color: #e8f0fe !important; /* Xanh nhạt Google */
-        color: #1a73e8 !important;
-    }
-    .active-item i {
-        color: #1a73e8 !important;
-    }
-
-    .sidebar-heading {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        font-weight: 700;
-        color: #9aa0a6;
-        padding-left: 15px;
-        margin-top: 15px;
-        margin-bottom: 5px;
-    }
-</style>
 
 <div class="container-fluid">
     <div class="row">
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse position-fixed start-0">
             <div class="position-sticky">
                 
-                <?php if ($role == 0): ?>
+                <?php if ($role == 0): // HỌC VIÊN ?>
                     <div class="sidebar-heading">Góc học tập</div>
                     
                     <a class="nav-link-custom <?= isAct('student', 'dashboard') ?>" href="index.php?controller=student&action=dashboard">
@@ -100,7 +46,7 @@ function isAct($ctrl, $act = '') {
                         <i class="fas fa-search"></i> Tìm khóa học mới
                     </a>
                 
-                <?php elseif ($role == 1): ?>
+                <?php elseif ($role == 1): // GIẢNG VIÊN ?>
                     <div class="sidebar-heading">Quản lý giảng dạy</div>
 
                     <a class="nav-link-custom <?= isAct('instructor', 'dashboard') ?>" href="index.php?controller=instructor&action=dashboard">
@@ -119,7 +65,7 @@ function isAct($ctrl, $act = '') {
                         <i class="fas fa-users"></i> Danh sách học viên
                     </a>
 
-                <?php elseif ($role == 2): ?>
+                <?php elseif ($role == 2): // ADMIN ?>
                     <div class="sidebar-heading">Hệ thống</div>
 
                     <a class="nav-link-custom <?= isAct('admin', 'dashboard') ?>" href="index.php?controller=admin&action=dashboard">
