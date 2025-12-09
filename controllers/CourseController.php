@@ -1,5 +1,4 @@
 <?php
-// controllers/CourseController.php
 
 require_once './config/Database.php';
 require_once './models/Course.php';
@@ -26,7 +25,7 @@ class CourseController {
     public function index() {
         
         // CSS cho trang này
-        $css_files = ['assets/css/course.css'];
+        $css_files = ['course.css'];
 
         $currentUser = $_SESSION['user'] ?? null; // Dùng null thay vì chuỗi rỗng để kiểm tra isset an toàn hơn
 
@@ -56,6 +55,37 @@ class CourseController {
         }
     }
 
+    // --- MANAGE HUB (Quản trị chi tiết 1 khóa học) ---
+    public function manage() {
+        $this->requireInstructor();
+
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        $course = $this->courseModel->getById($id);
+
+        if (!$course || $course['instructor_id'] != $_SESSION['user']['id']) {
+            $_SESSION['error'] = "Khóa học không tồn tại hoặc không có quyền truy cập.";
+            header("Location: index.php?controller=course&action=index");
+            exit;
+        }
+
+        
+        // Lấy tổng số học viên
+        $totalStudents = $this->courseModel->countStudents($id);
+
+        // Tính doanh thu ước tính (Số học viên * Giá khóa học)
+        // Lưu ý: Đây là ước tính vì DB chưa có bảng lưu giá tại thời điểm mua
+        $totalRevenue = $totalStudents * $course['price'];
+
+        // Lấy tiến độ trung bình (Để hiển thị thay cho Rating)
+        $avgProgress = $this->courseModel->getAverageProgress($id);
+
+        $css_files = ['course_hub.css']; 
+        
+        require_once 'views/layouts/header.php';
+        require_once 'views/layouts/sidebar.php';
+        require_once 'views/instructor/course/manage.php';
+        require_once 'views/layouts/footer.php';
+    }
     // --- CREATE ---
     public function create() {
         $this->requireInstructor();
@@ -150,7 +180,7 @@ class CourseController {
             } else {
                 $_SESSION['error'] = implode("<br>", $errors);
             }
-            header("Location: index.php?controller=course&action=index");
+            header("Location: index.php?controller=course&action=manage&id=" . $id);
             exit;
         }
 
@@ -190,19 +220,6 @@ class CourseController {
         }
         header("Location: index.php?controller=course&action=index");
         exit;
-    }
-
-    public function detail() {
-        
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-        $course = $this->courseModel->getById($id);
-
-        if (!$course) {
-            echo "<p class='text-danger text-center'>Không tìm thấy khóa học.</p>";
-            exit;
-        }
-
-        require 'views/instructor/course/detail.php';
     }
 
     // --- HELPERS ---
@@ -250,5 +267,7 @@ class CourseController {
         if (move_uploaded_file($file["tmp_name"], $targetDir . $fileName)) return $fileName;
         return false;
     }
+
+    
 }
 ?>

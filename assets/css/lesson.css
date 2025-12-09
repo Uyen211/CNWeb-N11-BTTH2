@@ -1,0 +1,17 @@
+.card {
+    border-radius: 8px;
+}
+.text-google-blue {
+    color: var(--google-blue);
+}
+.btn-primary {
+    background-color: var(--google-blue);
+    border-color: var(--google-blue);
+}
+.btn-primary:hover {
+    background-color: var(--google-blue-hover);
+    border-color: var(--google-blue-hover);
+}
+.table-hover tbody tr:hover {
+    background-color: var(--google-bg-hover);
+}

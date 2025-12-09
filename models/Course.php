@@ -177,6 +177,36 @@ class Course {
         return false;
     }
 
+    // Đếm số lượng học viên đã đăng ký (trừ trạng thái dropped nếu cần)
+    public function countStudents($courseId) {
+        // Chỉ đếm những học viên active hoặc completed
+        $query = "SELECT COUNT(*) as total 
+                  FROM enrollments 
+                  WHERE course_id = :course_id 
+                  AND status IN ('active', 'completed')";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':course_id', $courseId);
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'];
+    }
+
+    // Tính trung bình tiến độ 
+    public function getAverageProgress($courseId) {
+        $query = "SELECT AVG(progress) as avg_progress 
+                  FROM enrollments 
+                  WHERE course_id = :course_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':course_id', $courseId);
+        $stmt->execute();
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['avg_progress'] ? round($row['avg_progress'], 1) : 0;
+    }
+
     // Kiểm tra học viên active
     public function hasActiveEnrollments($courseId) {
         $query = "SELECT COUNT(*) as count FROM enrollments WHERE course_id = :course_id AND status = 'active'";
@@ -193,6 +223,22 @@ class Course {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function checkInstructorOwnership($courseId, $instructorId) {
+        $query = "SELECT COUNT(*) FROM " . $this->table . " 
+                  WHERE id = :course_id AND instructor_id = :instructor_id";
+        
+        $stmt = $this->conn->prepare($query);
+        
+        // Gán giá trị và đảm bảo kiểu dữ liệu an toàn
+        $stmt->bindParam(':course_id', $courseId, PDO::PARAM_INT);
+        $stmt->bindParam(':instructor_id', $instructorId, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        
+        // Nếu số lượng bản ghi > 0, nghĩa là instructorId này sở hữu khóa học đó.
+        return $stmt->fetchColumn() > 0;
     }
 }
 ?>
