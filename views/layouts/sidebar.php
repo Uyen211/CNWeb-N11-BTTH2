@@ -1,89 +1,152 @@
-
 <?php
-// Đảm bảo user đã đăng nhập mới hiện sidebar này
-if (!isset($_SESSION['user'])) {
-    echo '<main class="col-12 ms-sm-auto px-md-4 py-4">';
+// 1. Logic lấy Role chuẩn (Ưu tiên session phẳng, fallback về mảng user)
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : (isset($_SESSION['user']['role']) ? $_SESSION['user']['role'] : -1);
+
+// Nếu chưa đăng nhập -> Không hiện sidebar -> Chỉ mở thẻ main full màn hình
+if ($role == -1) {
+    echo '<main class="container-fluid py-4" style="margin-top: 60px;">'; 
     return;
 }
 
-$role = $_SESSION['user']['role']; // 0: Student, 1: Instructor, 2: Admin
-
-// Hàm kiểm tra link active (để tô màu xanh)
-function isActive($path) {
-    $current_uri = $_SERVER['REQUEST_URI'];
-    // So sánh tương đối, nếu URL hiện tại chứa path thì trả về class active
-    return (strpos($current_uri, $path) !== false) ? 'active' : '';
+// 2. Hàm kiểm tra Active (Dựa trên Controller & Action trên URL)
+function isAct($ctrl, $act = '') {
+    $c = $_GET['controller'] ?? 'home';
+    $a = $_GET['action'] ?? 'index';
+    if ($c == $ctrl && ($act == '' || $a == $act)) {
+        return 'active-item'; // Class riêng để style
+    }
+    return 'text-dark';
 }
 ?>
 
+<style>
+    /* Sidebar nằm dưới Header (Header cao khoảng 60px) */
+    #sidebarMenu {
+        top: 60px; 
+        height: calc(100vh - 60px);
+        padding-top: 1rem;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
 
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse border-end">
+    /* Style từng item */
+    .nav-link-custom {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        color: #444;
+        text-decoration: none;
+        border-radius: 0 50px 50px 0; /* Bo tròn 1 đầu kiểu Google */
+        margin-bottom: 5px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
 
-<div class="sidebar-wrapper d-none d-md-block">
-    
-    <div class="sidebar-heading">Quản lý</div>
-    
-    <div class="nav flex-column">
-        
-        <?php if ($role == 0): ?>
-            <a class="sidebar-link <?= isActive('/student/dashboard.php') ?>" href="/BTTH2/views/student/dashboard.php">
-                <div class="sidebar-icon"><i class="fas fa-home"></i></div>
-                <span>Tổng quan</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/student/my_courses.php') ?>" href="/BTTH2/views/student/my_courses.php">
-                <div class="sidebar-icon"><i class="fas fa-book-reader"></i></div>
-                <span>Khóa học của tôi</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/student/course_progress.php') ?>" href="/BTTH2/views/student/course_progress.php">
-                <div class="sidebar-icon"><i class="fas fa-chart-line"></i></div>
-                <span>Tiến độ học tập</span>
-            </a>
+    .nav-link-custom:hover {
+        background-color: #f1f3f4;
+        color: #1a73e8;
+    }
 
-        <?php elseif ($role == 1): ?>
-            <a class="sidebar-link <?= isActive('/instructor/dashboard.php') ?>" href="/BTTH2/views/instructor/dashboard.php">
-                <div class="sidebar-icon"><i class="fas fa-tachometer-alt"></i></div>
-                <span>Dashboard</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/instructor/course/manage.php') ?>" href="/BTTH2/views/instructor/course/manage.php">
-                <div class="sidebar-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                <span>Quản lý khóa học</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/instructor/students/list.php') ?>" href="/BTTH2/views/instructor/students/list.php">
-                <div class="sidebar-icon"><i class="fas fa-users"></i></div>
-                <span>Học viên của tôi</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/instructor/materials/upload.php') ?>" href="/BTTH2/views/instructor/materials/upload.php">
-                <div class="sidebar-icon"><i class="fas fa-upload"></i></div>
-                <span>Tài liệu</span>
-            </a>
+    .nav-link-custom i {
+        width: 24px;
+        text-align: center;
+        margin-right: 10px;
+        color: #5f6368;
+    }
 
-        <?php elseif ($role == 2): ?>
-            <a class="sidebar-link <?= isActive('/admin/dashboard.php') ?>" href="/BTTH2/views/admin/dashboard.php">
-                <div class="sidebar-icon"><i class="fas fa-cogs"></i></div>
-                <span>Tổng quan hệ thống</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/admin/users/manage.php') ?>" href="/BTTH2/views/admin/users/manage.php">
-                <div class="sidebar-icon"><i class="fas fa-user-shield"></i></div>
-                <span>Quản lý người dùng</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/admin/categories/list.php') ?>" href="/BTTH2/views/admin/categories/list.php">
-                <div class="sidebar-icon"><i class="fas fa-list"></i></div>
-                <span>Danh mục khóa học</span>
-            </a>
-            <a class="sidebar-link <?= isActive('/admin/reports/statistics.php') ?>" href="/BTTH2/views/admin/reports/statistics.php">
-                <div class="sidebar-icon"><i class="fas fa-chart-bar"></i></div>
-                <span>Báo cáo thống kê</span>
-            </a>
-        <?php endif; ?>
+    /* Trạng thái đang chọn */
+    .active-item {
+        background-color: #e8f0fe !important; /* Xanh nhạt Google */
+        color: #1a73e8 !important;
+    }
+    .active-item i {
+        color: #1a73e8 !important;
+    }
 
-        <hr style="margin: 12px 0; border-top: 1px solid #dadce0;">
+    .sidebar-heading {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #9aa0a6;
+        padding-left: 15px;
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+</style>
 
-        <a class="sidebar-link text-danger" href="/BTTH2/controllers/AuthController.php?action=logout">
-            <div class="sidebar-icon"><i class="fas fa-sign-out-alt"></i></div>
-            <span>Đăng xuất</span>
-        </a>
-    </div>
-</div>
-</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse position-fixed start-0">
+            <div class="position-sticky">
+                
+                <?php if ($role == 0): ?>
+                    <div class="sidebar-heading">Góc học tập</div>
+                    
+                    <a class="nav-link-custom <?= isAct('student', 'dashboard') ?>" href="index.php?controller=student&action=dashboard">
+                        <i class="fas fa-home"></i> Tổng quan
+                    </a>
+                    
+                    <a class="nav-link-custom <?= isAct('student', 'my-courses') ?>" href="index.php?controller=student&action=my-courses">
+                        <i class="fas fa-book-open"></i> Khóa học của tôi
+                    </a>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                    <a class="nav-link-custom <?= isAct('student', 'history') ?>" href="index.php?controller=student&action=history">
+                        <i class="fas fa-history"></i> Lịch sử học tập
+                    </a>
+
+                    <div class="sidebar-heading mt-3">Khám phá</div>
+                    <a class="nav-link-custom <?= isAct('course', 'index') ?>" href="index.php?controller=course&action=index">
+                        <i class="fas fa-search"></i> Tìm khóa học mới
+                    </a>
+                
+                <?php elseif ($role == 1): ?>
+                    <div class="sidebar-heading">Quản lý giảng dạy</div>
+
+                    <a class="nav-link-custom <?= isAct('instructor', 'dashboard') ?>" href="index.php?controller=instructor&action=dashboard">
+                        <i class="fas fa-chart-line"></i> Bảng điều khiển
+                    </a>
+
+                    <a class="nav-link-custom <?= isAct('instructor', 'create') ?>" href="index.php?controller=instructor&action=create">
+                        <i class="fas fa-plus-circle text-primary"></i> Tạo khóa học mới
+                    </a>
+
+                    <a class="nav-link-custom <?= isAct('instructor', 'manage') ?>" href="index.php?controller=instructor&action=manage">
+                        <i class="fas fa-chalkboard-teacher"></i> Khóa học của tôi
+                    </a>
+
+                    <a class="nav-link-custom <?= isAct('instructor', 'students') ?>" href="index.php?controller=instructor&action=students">
+                        <i class="fas fa-users"></i> Danh sách học viên
+                    </a>
+
+                <?php elseif ($role == 2): ?>
+                    <div class="sidebar-heading">Hệ thống</div>
+
+                    <a class="nav-link-custom <?= isAct('admin', 'dashboard') ?>" href="index.php?controller=admin&action=dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Thống kê chung
+                    </a>
+
+                    <a class="nav-link-custom <?= isAct('admin', 'users') ?>" href="index.php?controller=admin&action=users">
+                        <i class="fas fa-user-shield"></i> Quản lý người dùng
+                    </a>
+
+                    <a class="nav-link-custom <?= isAct('admin', 'categories') ?>" href="index.php?controller=admin&action=categories">
+                        <i class="fas fa-tags"></i> Danh mục khóa học
+                    </a>
+                <?php endif; ?>
+
+                <div class="border-top my-3 mx-2"></div>
+                <div class="sidebar-heading">Cá nhân</div>
+
+                <a class="nav-link-custom <?= isAct('user', 'profile') ?>" href="index.php?controller=user&action=profile">
+                    <i class="fas fa-user-circle"></i> Hồ sơ cá nhân
+                </a>
+            
+                <a class="nav-link-custom text-danger mt-2" href="index.php?controller=auth&action=logout">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </a>
+
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4" style="margin-top: 50px;">

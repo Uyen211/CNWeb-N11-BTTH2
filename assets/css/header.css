@@ -28,11 +28,22 @@ body {
 }
 
 .navbar-brand {
+    font-family: 'Roboto', sans-serif;
     font-size: 22px;
-    color: var(--google-text-dark) !important;
-    letter-spacing: -0.5px;
+    font-weight: 600; /* Chữ đậm vừa phải */
+    color: #5f6368 !important; /* Màu xám đậm chuẩn Google */
     display: flex;
     align-items: center;
+    letter-spacing: -0.5px;
+}
+
+.navbar-brand i {
+    font-size: 26px; /* Icon to hơn chữ một chút */
+    color: #1a73e8 !important; /* Màu xanh Google */
+}
+
+.navbar-brand:hover {
+    opacity: 0.9;
 }
 
 /* --- MENU LINK HOVER EFFECT --- */
@@ -138,14 +149,20 @@ body {
 }
 
 .avatar-btn {
+    background: transparent;
     border: none;
-    background: none;
     padding: 4px;
     border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 .avatar-btn:hover {
     background-color: rgba(60,64,67,0.08);
+}
+
+.dropdown-toggle.hide-arrow::after {
+    display: none !important;
 }
 
 .dropdown-menu-google {
@@ -155,6 +172,21 @@ body {
     margin-top: 10px;
     padding: 8px 0;
     min-width: 250px;
+}
+
+.dropdown-user-info {
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 8px;
+}
+
+.dropdown-item-google {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: #3c4043;
+}
+
+.dropdown-item-google:hover {
+    background-color: #f1f3f4;
 }
 
 /* --- FIX MOBILE MENU --- */
