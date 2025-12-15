@@ -127,12 +127,11 @@ class CourseController {
         require_once 'views/instructor/course/manage.php';
         require_once 'views/layouts/footer.php';
     }
-    
-    // --- CREATE ---
+    // controllers/CourseController.php
+
     public function create() {
         $this->requireInstructor();
 
-        // Xử lý POST (Lưu dữ liệu)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->validateCSRF();
             $data = $this->sanitizeInput($_POST);
@@ -141,7 +140,7 @@ class CourseController {
             if (empty($errors)) {
                 $imagePath = $this->handleImageUpload($_FILES['image']);
                 if ($imagePath) {
-                    // Set các thuộc tính cho Model
+                    // Set data
                     $this->courseModel->title = $data['title'];
                     $this->courseModel->description = $data['description'];
                     $this->courseModel->instructor_id = $_SESSION['user']['id'];
@@ -150,31 +149,30 @@ class CourseController {
                     $this->courseModel->duration_weeks = $data['duration_weeks'];
                     $this->courseModel->level = $data['level'];
                     $this->courseModel->image = $imagePath;
+                    
 
                     if ($this->courseModel->create()) {
-                        $_SESSION['success'] = "Tạo khóa học thành công! Đang chờ duyệt.";
-                        // Redirect về trang danh sách của instructor
+                        // --- SỬA MESSAGE ---
+                        $_SESSION['success'] = "Gửi yêu cầu tạo khóa học thành công! Vui lòng chờ Admin phê duyệt.";
                         header("Location: index.php?controller=course&action=instructor_courses");
                         exit;
                     } else {
-                        $_SESSION['error'] = "Lỗi hệ thống.";
+                        $_SESSION['error'] = "Lỗi hệ thống không thể tạo khóa học.";
                     }
                 } else {
-                     $_SESSION['error'] = "Lỗi upload ảnh.";
+                    $_SESSION['error'] = "Lỗi upload ảnh.";
                 }
             } else {
                 $_SESSION['error'] = implode("<br>", $errors);
             }
+            // Nếu lỗi thì redirect lại form (hoặc giữ nguyên trang để hiện lỗi - tùy logic view)
+            // Ở đây redirect về list theo code cũ của bạn
             header("Location: index.php?controller=course&action=instructor_courses");
             exit;
         }
 
-        // Xử lý GET (Hiển thị Form)
-        // Sử dụng hàm getCategories từ code bạn bè (hoặc categoryModel nếu có)
-        $categories = method_exists($this->courseModel, 'getCategories') 
-                    ? $this->courseModel->getCategories() 
-                    : ($this->categoryModel ? $this->categoryModel->getAll() : []);
-        
+        // Phần GET hiển thị form giữ nguyên
+        $categories = $this->courseModel->getCategories(); 
         $csrf_token = $this->generateCSRF();
         require 'views/instructor/course/create.php';
     }
