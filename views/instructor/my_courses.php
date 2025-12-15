@@ -72,6 +72,12 @@
                                             onclick="confirmDelete(<?= $row['id'] ?>, '<?= htmlspecialchars($row['title'], ENT_QUOTES) ?>')" title="Xóa">
                                         <i class="fas fa-trash"></i>
                                     </button>
+
+                                    <a href="/onlinecourse/index.php?controller=course&action=manage&id=<?= $row['id'] ?>" 
+                                    class="btn btn-sm btn-outline-primary me-1" 
+                                    title="Quản lý chi tiết">
+                                        <i class="fas fa-cog"></i> Quản lý
+                                    </a>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -110,7 +116,7 @@
                 Bạn muốn xóa: <strong id="delName"></strong>?
             </div>
             <div class="modal-footer">
-                <form method="POST" action="index.php?controller=course&action=delete">
+                <form method="POST" action="/onlinecourse/index.php?controller=course&action=delete">
                     <input type="hidden" name="id" id="delId">
                     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
