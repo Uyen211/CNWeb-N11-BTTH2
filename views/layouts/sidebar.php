@@ -51,19 +51,19 @@ function isActive($path) {
             
 
         <?php elseif ($role == 2): ?>
-            <a class="sidebar-link <?= isActive('/admin/dashboard.php') ?>" href="/onlinecourse/views/admin/dashboard.php">
+            <a class="sidebar-link <?= isActive('/admin/dashboard.php') ?>" href="/onlinecourse/index.php?controller=admin&action=dashboard">
                 <div class="sidebar-icon"><i class="fas fa-cogs"></i></div>
                 <span>Tổng quan hệ thống</span>
             </a>
-            <a class="sidebar-link <?= isActive('/admin/users/manage.php') ?>" href="/onlinecourse/views/admin/users/manage.php">
+            <a class="sidebar-link <?= isActive('/admin/users/manage.php') ?>" href="/onlinecourse/index.php?controller=admin&action=users">
                 <div class="sidebar-icon"><i class="fas fa-user-shield"></i></div>
                 <span>Quản lý người dùng</span>
             </a>
-            <a class="sidebar-link <?= isActive('/admin/categories/list.php') ?>" href="/onlinecourse/views/admin/categories/list.php">
+            <a class="sidebar-link <?= isActive('/admin/categories/list.php') ?>" href="/onlinecourse/index.php?controller=admin&action=listCategory">
                 <div class="sidebar-icon"><i class="fas fa-list"></i></div>
                 <span>Danh mục khóa học</span>
             </a>
-            <a class="sidebar-link <?= isActive('/admin/reports/statistics.php') ?>" href="/onlinecourse/views/admin/reports/statistics.php">
+            <a class="sidebar-link <?= isActive('/admin/reports/statistics.php') ?>" href="/onlinecourse/index.php?controller=admin&action=statistics">
                 <div class="sidebar-icon"><i class="fas fa-chart-bar"></i></div>
                 <span>Báo cáo thống kê</span>
             </a>

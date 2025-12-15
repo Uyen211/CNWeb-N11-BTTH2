@@ -1,9 +1,4 @@
 <?php
-<<<<<<< HEAD
-=======
-// models/Enrollment.php
-
->>>>>>> feature/instructor-student-dashboard
 class Enrollment {
     private $conn;
     private $table = 'enrollments';
@@ -12,7 +7,10 @@ class Enrollment {
         $this->conn = $db;
     }
 
-<<<<<<< HEAD
+    // =================================================================
+    // PHẦN 1: STUDENT METHODS (Dành cho Sinh viên)
+    // =================================================================
+
     // 1. Kiểm tra xem user đã đăng ký khóa học này chưa
     public function isEnrolled($student_id, $course_id) {
         $query = "SELECT id FROM " . $this->table . " 
@@ -31,6 +29,11 @@ class Enrollment {
 
     // 2. Thực hiện đăng ký khóa học mới
     public function registerCourse($student_id, $course_id) {
+        // Kiểm tra tránh trùng lặp trước khi insert
+        if ($this->isEnrolled($student_id, $course_id)) {
+            return false;
+        }
+
         $query = "INSERT INTO " . $this->table . " 
                   (student_id, course_id, status, progress, enrolled_date) 
                   VALUES (:student_id, :course_id, 'active', 0, NOW())";
@@ -45,22 +48,28 @@ class Enrollment {
         return false;
     }
 
+    // 3. Lấy danh sách khóa học của tôi (My Courses)
     public function getMyCourses($student_id) {
         // JOIN bảng enrollments với courses để lấy thông tin hiển thị
-        $query = "SELECT c.id, c.title, c.image, c.price,
-                        e.progress, e.enrolled_date, e.status, e.course_id
-                FROM enrollments e
-                JOIN courses c ON e.course_id = c.id
-                WHERE e.student_id = :student_id
-                ORDER BY e.enrolled_date DESC";
+        $query = "SELECT c.id, c.title, c.image, c.price, c.instructor_id,
+                         e.progress, e.enrolled_date, e.status, e.course_id
+                  FROM enrollments e
+                  JOIN courses c ON e.course_id = c.id
+                  WHERE e.student_id = :student_id
+                  ORDER BY e.enrolled_date DESC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':student_id', $student_id);
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-=======
-    // Lấy danh sách học viên theo course_id (có phân trang)
+    }
+
+    // =================================================================
+    // PHẦN 2: INSTRUCTOR METHODS (Dành cho Giảng viên/Quản trị)
+    // =================================================================
+
+    // Lấy danh sách học viên theo course_id (có phân trang) - Dùng cho trang Manage Course
     public function getStudentsByCourse($courseId, $limit, $offset) {
         $query = "SELECT e.*, u.fullname, u.email, u.username 
                   FROM " . $this->table . " e
@@ -75,7 +84,7 @@ class Enrollment {
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt;
+        return $stmt; // Trả về statement để fetch trong vòng lặp
     }
 
     // Đếm tổng số học viên của khóa học (để phân trang)
@@ -89,6 +98,7 @@ class Enrollment {
     }
 
     // Lấy danh sách học viên vừa đăng ký MỚI NHẤT (của bất kỳ khóa học nào thuộc giảng viên)
+    // Dùng cho Dashboard Widget
     public function getRecentActivity($instructorId, $limit = 5) {
         $query = "SELECT e.*, u.fullname as student_name, c.title as course_title, c.id as course_id
                 FROM enrollments e
@@ -104,7 +114,7 @@ class Enrollment {
         return $stmt;
     }
 
-    // Đếm tổng số học viên của giảng viên (Distinct student - 1 người học 2 khóa tính là 1 hoặc tùy logic, ở đây mình đếm tổng lượt enroll)
+    // Đếm tổng số học viên của giảng viên (Tính tổng lượt enroll active)
     public function countTotalEnrollments($instructorId) {
         $query = "SELECT COUNT(*) as total
                 FROM enrollments e
@@ -115,7 +125,6 @@ class Enrollment {
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total'];
->>>>>>> feature/instructor-student-dashboard
     }
 }
 ?>

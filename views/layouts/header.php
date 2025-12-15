@@ -10,12 +10,8 @@ $base_url = '/onlinecourse';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title><?= $page_title ?? 'EduOnline - Hệ thống học trực tuyến' ?></title>
-    
-=======
+
     <title><?= $page_title ?? 'Hệ thống Quản lý Khóa học Online' ?></title>
->>>>>>> feature/instructor-student-dashboard
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -25,6 +21,14 @@ $base_url = '/onlinecourse';
     <link rel="stylesheet" href="<?= $base_url ?>/assets/css/footer.css">
     <link rel="stylesheet" href="<?= $base_url ?>/assets/css/home.css">
     <link rel="stylesheet" href="<?= $base_url ?>/assets/css/auth.css">
+
+    <?php 
+    if (isset($css_files) && is_array($css_files)) {
+        foreach ($css_files as $file) {
+            echo '<link rel="stylesheet" href="/onlinecourse/assets/css/' . $file . '">';
+        }
+    }
+    ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
