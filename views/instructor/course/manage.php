@@ -36,7 +36,7 @@
             <a class="nav-link" href="/onlinecourse/index.php?controller=lesson&action=index&course_id=<?= $course['id'] ?>">Bài học (Lessons)</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/onlinecourse/index.php?controller=student&action=index&course_id=<?= $course['id'] ?>">Học viên (Students)</a>
+            <a class="nav-link" href="/onlinecourse/index.php?controller=enrollment&action=index&course_id=<?= $course['id'] ?>">Học viên (Students)</a>
         </li>
     </ul>
 </div>

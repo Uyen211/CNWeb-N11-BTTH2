@@ -86,6 +86,7 @@ class CourseController {
         require_once 'views/instructor/course/manage.php';
         require_once 'views/layouts/footer.php';
     }
+    
     // --- CREATE ---
     public function create() {
         $this->requireInstructor();

@@ -240,5 +240,35 @@ class Course {
         // Nếu số lượng bản ghi > 0, nghĩa là instructorId này sở hữu khóa học đó.
         return $stmt->fetchColumn() > 0;
     }
+
+        // Lấy Top 5 khóa học có nhiều học viên nhất của giảng viên
+    public function getTopCourses($instructorId, $limit = 5) {
+        $query = "SELECT c.id, c.title, c.image, c.price, COUNT(e.id) as student_count 
+                FROM courses c
+                LEFT JOIN enrollments e ON c.id = e.course_id
+                WHERE c.instructor_id = :instructor_id
+                GROUP BY c.id
+                ORDER BY student_count DESC
+                LIMIT :limit";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':instructor_id', $instructorId);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    // Tính tổng doanh thu của TẤT CẢ khóa học thuộc giảng viên
+    public function getTotalRevenue($instructorId) {
+        // Giả định doanh thu = giá khóa học * số lượt enroll (không tính dropped)
+        $query = "SELECT SUM(c.price) as total_revenue
+                FROM enrollments e
+                JOIN courses c ON e.course_id = c.id
+                WHERE c.instructor_id = :instructor_id AND e.status != 'dropped'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':instructor_id', $instructorId);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_revenue'] ?? 0;
+    }
 }
 ?>
