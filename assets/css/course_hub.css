@@ -1,0 +1,79 @@
+/* assets/css/course_hub.css */
+.course-hub-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 24px 0 0 0;
+    margin-bottom: 24px;
+}
+
+.course-title {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--google-text-dark);
+}
+
+.course-meta {
+    font-size: 14px;
+    color: var(--google-text);
+}
+
+/* Custom Tabs Google Style */
+.nav-tabs-google {
+    border-bottom: none;
+    margin-top: 20px;
+}
+
+.nav-tabs-google .nav-link {
+    border: none;
+    color: var(--google-text);
+    font-weight: 500;
+    padding: 12px 24px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-tabs-google .nav-link:hover {
+    color: var(--google-blue);
+    background-color: var(--google-bg-hover);
+    border-radius: 4px 4px 0 0;
+}
+
+.nav-tabs-google .nav-link.active {
+    color: var(--google-blue);
+    border-bottom: 3px solid var(--google-blue);
+    background: transparent;
+}
+
+/* Info Cards */
+.info-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--google-text);
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 16px;
+    color: var(--google-text-dark);
+    font-weight: 400;
+}
+.course-thumbnail-hub {
+    display: block;             /* Đảm bảo ảnh là block element */
+    width: 100%;                /* Chiếm trọn chiều rộng container cha */
+    height: 220px;              /* ĐẶT CHIỀU CAO CỐ ĐỊNH (Thay vì max-height) */
+    object-fit: cover;          /* Cắt ảnh vừa khung, không bị méo/dẹt */
+    object-position: center;    /* Lấy trung tâm bức ảnh */
+    border-radius: 8px;         /* Bo góc mềm mại */
+    border: 1px solid #e0e0e0;  /* Viền nhẹ để tách biệt với nền trắng */
+    background-color: #f8f9fa;  /* Màu nền chờ khi ảnh chưa load xong */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Thêm bóng nhẹ cho nổi bật */
+}
+
+.stat-card {
+    border-left: 4px solid var(--google-blue);
+    transition: transform 0.2s;
+}
+.stat-card:hover {
+    transform: translateY(-2px);
+}

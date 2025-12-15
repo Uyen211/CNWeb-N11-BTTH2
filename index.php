@@ -6,8 +6,10 @@ require_once './config/Database.php';
 
 $_SESSION['user'] = [
     'id' => 2,
-    'role' => 1
-]; // Giả lập user đã đăng nhập với role Instructor
+    'role' => 1,
+    'fullname' => 'Nguyễn Văn A'
+];
+
 
 // --- PHẦN XỬ LÝ ROUTING (ĐỊNH TUYẾN) ---
 

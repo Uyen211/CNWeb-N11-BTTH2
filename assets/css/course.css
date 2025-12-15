@@ -1,63 +1,186 @@
-.course-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    transition: box-shadow 0.3s ease;
-    background: #fff;
+/* --- CẤU HÌNH CHUNG --- */
+body {
+    background-color: var(--google-gray-bg); /* Nền xám nhạt giúp nội dung nổi bật */
 }
 
-.course-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.course-image-wrapper {
-    height: 180px;
-    overflow: hidden;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    background-color: var(--google-gray-bg);
-}
-
-.course-image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
+/* --- TIÊU ĐỀ TRANG & NÚT TẠO --- */
 .page-title {
-    font-size: 24px;
-    font-weight: 400;
-    color: var(--google-text-dark);
-    margin-bottom: 24px;
-}
-
-.table-custom th {
+    font-size: 1.5rem;
     font-weight: 500;
     color: var(--google-text-dark);
-    border-bottom: 2px solid #e0e0e0;
 }
 
-.table-custom td {
-    vertical-align: middle;
+/* Tùy chỉnh nút Primary theo màu Google */
+.btn-primary {
+    background-color: var(--google-blue);
+    border-color: var(--google-blue);
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px; /* Bo góc nhẹ */
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+    background-color: var(--google-blue-hover);
+    border-color: var(--google-blue-hover);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+}
+
+/* --- KHỐI CARD BAO QUANH BẢNG --- */
+.card {
+    border: none; /* Bỏ viền mặc định của bootstrap */
+    border-radius: 8px;
+    background-color: #fff;
+    /* Hiệu ứng bóng đổ nhẹ kiểu Google */
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    overflow: hidden; /* Để bo góc table không bị lòi ra */
+}
+
+/* --- TÙY CHỈNH BẢNG (TABLE) --- */
+.table {
+    margin-bottom: 0;
+}
+
+/* Header của bảng */
+.table thead th {
+    background-color: #fff;
     color: var(--google-text);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #f1f3f4;
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
 }
 
-.status-badge {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
+/* Các hàng trong bảng */
+.table tbody tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+/* Hiệu ứng hover dòng */
+.table tbody tr:hover {
+    background-color: var(--google-bg-hover);
+}
+
+.table tbody td {
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    color: var(--google-text-dark);
+    font-size: 0.95rem;
+}
+
+/* --- CÁC THÀNH PHẦN TRONG BẢNG --- */
+
+/* 1. Hình ảnh thumbnail */
+.table img.rounded {
+    border-radius: 6px !important;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* 2. Tên khóa học (Link) */
+.table a.text-dark {
+    color: var(--google-blue) !important; /* Đổi sang màu xanh cho dễ nhận biết là link */
     font-weight: 500;
+    transition: color 0.2s;
 }
 
-.btn-floating {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
+.table a.text-dark:hover {
+    color: var(--google-blue-hover) !important;
+    text-decoration: underline !important;
+}
+
+/* 3. Badge danh mục */
+.badge.bg-info {
+    background-color: #e8f0fe !important; /* Nền xanh rất nhạt */
+    color: var(--google-blue) !important; /* Chữ xanh đậm */
+    font-weight: 500;
+    border-radius: 16px; /* Bo tròn kiểu chip/tag */
+    padding: 0.35em 0.8em;
+    border: 1px solid rgba(26, 115, 232, 0.1);
+}
+
+/* 4. Giá tiền */
+.text-primary {
+    color: #188038 !important; /* Google Green cho tiền tệ (hoặc giữ var(--google-blue) tùy bạn) */
+    font-weight: 600;
+}
+
+/* 5. Mô tả ngắn */
+small.text-muted {
+    color: var(--google-text) !important;
+    display: block;
+    line-height: 1.4;
+}
+
+/* --- CÁC NÚT HÀNH ĐỘNG (ACTION BUTTONS) --- */
+.btn-sm {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    margin-right: 4px;
+}
+
+/* Nút Sửa */
+.btn-outline-warning {
+    color: #f9ab00;
+    border-color: #f9ab00;
+}
+.btn-outline-warning:hover {
+    background-color: #f9ab00;
+    color: #fff;
+}
+
+/* Nút Xóa */
+.btn-outline-danger {
+    color: #d93025;
+    border-color: #d93025;
+}
+.btn-outline-danger:hover {
+    background-color: #d93025;
+    color: #fff;
+}
+
+/* Nút Quản lý chi tiết */
+.btn-outline-primary {
+    color: var(--google-blue);
+    border-color: var(--google-blue);
+}
+.btn-outline-primary:hover {
+    background-color: var(--google-blue);
+    color: #fff;
+}
+
+/* --- MODAL (POPUP) --- */
+.modal-content {
+    border: none;
+    border-radius: 12px; /* Bo góc modal lớn hơn chút */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #f1f3f4;
+    padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+    font-weight: 500;
+    color: var(--google-text-dark);
+}
+
+.modal-body {
+    padding: 1.5rem;
+    color: var(--google-text-dark);
+}
+
+/* Alert styles adjustments */
+.alert {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
