@@ -1,13 +1,19 @@
 <?php
 session_start(); // Khởi tạo session ngay từ đầu
 
-// Import file cấu hình Database
+// 1. Import file cấu hình Database & User Model
 require_once './config/Database.php';
+require_once './models/User.php'; // Load User model để dùng cho AuthController
 
-$_SESSION['user'] = [
-    'id' => 2,
-    'role' => 1
-]; // Giả lập user đã đăng nhập với role Instructor
+// --- KHỞI TẠO KẾT NỐI DATABASE (QUAN TRỌNG) ---
+$database = new Database();
+$db = $database->getConnection(); // Lấy biến kết nối PDO ($db)
+
+// -----------------------------------------------------------
+// ⚠️ XÓA ĐOẠN CODE SAU ĐỂ CHỨC NĂNG LOGIN HOẠT ĐỘNG THẬT:
+// $_SESSION['user'] = [ 'id' => 2, 'role' => 1 ]; 
+// -----------------------------------------------------------
+
 
 // --- PHẦN XỬ LÝ ROUTING (ĐỊNH TUYẾN) ---
 
@@ -15,38 +21,27 @@ $controllerName = 'HomeController'; // Mặc định
 $action = 'index';                  // Mặc định
 $params = [];
 
-// TRƯỜNG HỢP 1: Dùng URL thân thiện (VD: /admin/manageCategories)
+// TRƯỜNG HỢP 1: Dùng URL thân thiện
 if (isset($_GET['url'])) {
     $url = rtrim($_GET['url'], '/');
     $url = explode('/', $url);
 
-    // Lấy Controller
     if (isset($url[0]) && $url[0] != "") {
         $controllerName = ucfirst($url[0]) . 'Controller';
     }
-
-    // Lấy Action
     if (isset($url[1]) && $url[1] != "") {
         $action = $url[1];
     }
-
-    // Lấy tham số
     if (count($url) > 2) {
         $params = array_values(array_slice($url, 2));
     }
 } 
-// TRƯỜNG HỢP 2: Dùng Query String (VD: index.php?controller=admin&action=manageCategories)
+// TRƯỜNG HỢP 2: Dùng Query String
 elseif (isset($_GET['controller'])) {
     $controllerName = ucfirst($_GET['controller']) . 'Controller';
-    
     if (isset($_GET['action'])) {
         $action = $_GET['action'];
     }
-    
-    // Nếu có id truyền vào URL thì đưa vào params (VD: &id=1)
-    // Lưu ý: Các hàm trong controller cần viết kiểu function deleteCategory() { $id = $_GET['id']; ... } 
-    // thay vì nhận tham số truyền vào nếu dùng cách này.
-    // code controller Admin dùng $_GET['id'] bên trong hàm nên không ảnh hưởng.
 }
 
 // --- PHẦN GỌI CONTROLLER ---
@@ -59,15 +54,16 @@ if (file_exists($controllerPath)) {
     
     // Kiểm tra class có tồn tại không
     if (class_exists($controllerName)) {
-        $controller = new $controllerName();
+        
+        // --- SỬA LỖI TẠI ĐÂY: TRUYỀN $db VÀO CONTROLLER ---
+        $controller = new $controllerName($db); 
+        // -------------------------------------------------
 
         // Kiểm tra method có tồn tại trong Controller không
         if (method_exists($controller, $action)) {
             // Gọi hành động
-            // Lưu ý: Nếu dùng params từ URL rewrite thì truyền vào, nếu không thì gọi hàm không tham số
             call_user_func_array([$controller, $action], $params);
         } else {
-            // Xử lý lỗi Action không tồn tại
             die("Lỗi 404: Không tìm thấy Action '{$action}' trong Controller '{$controllerName}'");
         }
     } else {
@@ -75,7 +71,7 @@ if (file_exists($controllerPath)) {
     }
 } else {
     // Xử lý lỗi Controller không tồn tại
-    die("Lỗi 404: Không tìm thấy Controller '{$controllerName}' (Path: {$controllerPath})");
+    // Chuyển về trang chủ hoặc báo lỗi 404 đẹp hơn
+    die("Lỗi 404: Không tìm thấy Controller '{$controllerName}'");
 }
-?> 
-
+?>

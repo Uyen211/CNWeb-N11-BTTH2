@@ -1,12 +1,11 @@
-
 /* Sidebar nằm dưới Header (Header cao khoảng 60px) */
 #sidebarMenu {
     top: 60px; 
     height: calc(100vh - 60px);
     padding-top: 1rem;
     overflow-y: auto;
-    z-index: 100;
     box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+
 }
 
 /* Style từng item */

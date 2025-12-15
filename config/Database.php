@@ -33,5 +33,9 @@ class Database {
             die(); // Dừng chương trình nếu lỗi
         }
     }
+
+    public function getConnection() {
+        return $this->pdo;
+    }
 }
 ?>
