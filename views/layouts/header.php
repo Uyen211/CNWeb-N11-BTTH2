@@ -53,11 +53,18 @@ $base_url = '/onlinecourse';
                     </li>
                 </ul>
 
-                <form class="search-wrapper me-4 d-none d-lg-block position-relative" action="index.php" method="GET">
+                <form class="search-wrapper position-relative w-100 w-lg-auto me-lg-4 mb-3 mb-lg-0" action="index.php" method="GET">
+                    
                     <input type="hidden" name="controller" value="course">
-                    <input type="hidden" name="action" value="search">
-                    <i class="fas fa-search search-icon"></i>
-                    <input class="form-control search-input-google" type="search" name="q" placeholder="Tìm kiếm khóa học...">
+                    <input type="hidden" name="action" value="index">
+                    
+                    <i class="fas fa-search search-icon position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    
+                    <input class="form-control search-input-google ps-5 rounded-pill bg-light border-0" 
+                        type="search" 
+                        name="keyword" 
+                        placeholder="Tìm kiếm khóa học..." 
+                        value="<?php echo htmlspecialchars($_GET['keyword'] ?? ''); ?>"> 
                 </form>
 
                 <div class="d-flex align-items-center">
@@ -107,13 +114,13 @@ $base_url = '/onlinecourse';
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item dropdown-item-google" href="index.php?controller=user&action=change_password">
+                                    <a class="dropdown-item dropdown-item-google" href="#">
                                         <i class="fas fa-key me-2 text-secondary w-20"></i> Đổi mật khẩu
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item dropdown-item-google text-danger" href="index.php?controller=auth&action=logout">
+                                    <a class="dropdown-item dropdown-item-google text-danger" href="<?= $base_url ?>/index.php?controller=auth&action=logout">
                                         <i class="fas fa-sign-out-alt me-2 w-20"></i> Đăng xuất
                                     </a>
                                 </li>
@@ -121,8 +128,8 @@ $base_url = '/onlinecourse';
                         </div>
 
                     <?php else: ?>
-                        <a href="index.php?controller=auth&action=login" class="btn btn-google-text me-2">Đăng nhập</a>
-                        <a href="index.php?controller=auth&action=register" class="btn btn-google-primary">Đăng ký</a>
+                        <a href="<?=$base_url ?>/index.php?controller=auth&action=login" class="btn btn-google-text me-2">Đăng nhập</a>
+                        <a href="<?=$base_url ?>/index.php?controller=auth&action=register" class="btn btn-google-primary">Đăng ký</a>
                     <?php endif; ?>
                     
                 </div>

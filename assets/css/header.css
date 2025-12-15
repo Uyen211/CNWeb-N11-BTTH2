@@ -225,3 +225,32 @@ body {
         padding-top: 10px;
     }
 }
+
+/* Style cho thanh tìm kiếm */
+.search-wrapper {
+    /* Mặc định trên Mobile: Chiếm hết chiều ngang */
+    width: 100%; 
+}
+
+.search-input-google {
+    /* Đảm bảo input luôn full width trong wrapper của nó */
+    width: 100%;
+    height: 45px; /* Tăng chiều cao chút cho dễ bấm trên điện thoại */
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+/* Khi input được focus (bấm vào) */
+.search-input-google:focus {
+    background-color: #fff !important;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.28); /* Hiệu ứng bóng đổ kiểu Google */
+}
+
+/* --- RESPONSIVE CHO DESKTOP (Màn hình lớn >= 992px) --- */
+@media (min-width: 992px) {
+    .search-wrapper {
+        /* Trên máy tính, cố định chiều rộng cho đẹp, không bị giãn quá đà */
+        width: 400px !important; 
+        max-width: 400px;
+    }
+}
