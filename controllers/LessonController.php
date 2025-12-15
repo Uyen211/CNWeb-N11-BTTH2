@@ -42,7 +42,7 @@ class LessonController {
     }
 
     // =================================================================
-    // PHẦN 1: STUDENT VIEW (Code của BẠN)
+    // PHẦN 1: STUDENT VIEW 
     // =================================================================
 
     public function view() {
@@ -89,11 +89,11 @@ class LessonController {
     }
 
     // =================================================================
-    // PHẦN 2: INSTRUCTOR MANAGE (Code của BẠN BÈ)
+    // PHẦN 2: INSTRUCTOR MANAGE
     // =================================================================
 
     // Trang danh sách bài học (Quản lý)
-    public function index() {
+    public function instructor_lesson() {
         $courseId = isset($_GET['course_id']) ? intval($_GET['course_id']) : 0;
         
         // 1. Kiểm tra quyền sở hữu 

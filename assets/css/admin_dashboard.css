@@ -1,0 +1,74 @@
+/* assets/css/admin_dashboard.css */
+.admin-card {
+    border: none;
+    border-radius: 15px;
+    color: white;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    min-height: 140px;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.admin-card .card-body {
+    position: relative;
+    z-index: 2;
+}
+
+/* Các background gradient hoa hòe */
+.bg-gradient-primary {
+    background: linear-gradient(45deg, #4e73df, #224abe);
+}
+.bg-gradient-success {
+    background: linear-gradient(45deg, #1cc88a, #13855c);
+}
+.bg-gradient-warning {
+    background: linear-gradient(45deg, #f6c23e, #dda20a);
+}
+.bg-gradient-danger {
+    background: linear-gradient(45deg, #e74a3b, #be2617);
+}
+
+.card-icon-bg {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    font-size: 4rem;
+    opacity: 0.2;
+    z-index: 1;
+    transform: rotate(-15deg);
+}
+
+.quick-action-btn {
+    border-radius: 12px;
+    padding: 20px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid #e3e6f0;
+    background: #fff;
+    color: #5a5c69;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    height: 100%;
+}
+
+.quick-action-btn:hover {
+    background: #f8f9fc;
+    border-color: #4e73df;
+    color: #4e73df;
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.quick-action-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}

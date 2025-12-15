@@ -83,16 +83,10 @@ class Course {
 
     // --- 4. TẠO KHÓA HỌC (INSTRUCTOR) ---
     public function create() {
+   
         $query = "INSERT INTO " . $this->table . " 
-                  SET title = :title, 
-                      description = :description, 
-                      instructor_id = :instructor_id, 
-                      category_id = :category_id, 
-                      price = :price, 
-                      duration_weeks = :duration_weeks, 
-                      level = :level, 
-                      image = :image,
-                      created_at = NOW()";
+              (title, description, instructor_id, category_id, price, duration_weeks, level, image, status, created_at, updated_at) 
+              VALUES (:title, :description, :instructor_id, :category_id, :price, :duration_weeks, :level, :image, 'pending', NOW(), NOW())";
 
         $stmt = $this->conn->prepare($query);
 
@@ -116,6 +110,8 @@ class Course {
         }
         return false;
     }
+
+    
 
     // --- 5. CẬP NHẬT KHÓA HỌC (INSTRUCTOR) ---
     public function update() {
@@ -165,6 +161,28 @@ class Course {
             return true;
         }
         return false;
+    }
+
+        // hàm lấy danh sách khóa học chờ duyệt (Cho Admin)
+    public function getPendingCourses() {
+        $query = "SELECT c.*, u.fullname as instructor_name, cat.name as category_name 
+                FROM " . $this->table . " c
+                JOIN users u ON c.instructor_id = u.id
+                LEFT JOIN categories cat ON c.category_id = cat.id
+                WHERE c.status = 'pending'
+                ORDER BY c.created_at ASC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    // hàm Duyệt hoặc Từ chối (Cho Admin)
+    public function updateStatus($id, $status) {
+        $query = "UPDATE " . $this->table . " SET status = :status WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 
     // --- 7. CÁC HÀM QUẢN TRỊ / ANALYTICS (INSTRUCTOR DASHBOARD) ---

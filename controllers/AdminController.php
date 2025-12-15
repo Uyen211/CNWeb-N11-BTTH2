@@ -4,10 +4,12 @@
 // Import các file cần thiết
 require_once 'config/Database.php';
 require_once 'models/Category.php';
+require_once 'models/User.php';
 
 class AdminController {
     private $categoryModel;
     private $db;
+    private $userModel;
 
     public function __construct() {
         // Khởi động session nếu chưa có (để dùng Flash Message và Auth)
@@ -26,12 +28,30 @@ class AdminController {
         $database = new Database();
         $this->db = $database->connect();
         $this->categoryModel = new Category($this->db);
+        $this->userModel = new User($this->db);
+    }
+    
+    public function dashboard() {
+        $this->requireAdmin();
+
+        // Chỉ cần lấy số lượng khóa học đang chờ duyệt để hiện thông báo (Notification Badge)
+        // Nếu bạn chưa có hàm này trong Course Model, hãy thêm vào nhé: SELECT COUNT(*) FROM courses WHERE status = 'pending'
+        $pendingCount = $this->courseModel->countPending(); 
+
+        // Sử dụng lại file CSS admin_dashboard.css để lấy các class gradient đẹp
+        $css_files = ['assets/css/admin_dashboard.css'];
+        
+        require_once 'views/layouts/header.php';
+        require_once 'views/layouts/sidebar.php';
+        require_once 'views/admin/dashboard.php'; // View mới bên dưới
+        require_once 'views/layouts/footer.php';
     }
 
+
     /**
-     * Hiển thị danh sách danh mục (Giao diện chính chứa Modal)
+     * Hiển thị danh sách danh mục 
      */
-    public function index() {
+    public function listCategory() {
         // Cấu hình View
         $page_title = "Quản lý Danh mục";
         $css_files = ['admin.css'];
@@ -61,6 +81,114 @@ class AdminController {
         require_once 'views/layouts/sidebar.php';
         require_once 'views/admin/categories/list.php';
         require_once 'views/layouts/footer.php';
+    }
+
+    public function statistic() {
+        $this->requireAdmin();
+
+        // Lấy số liệu thống kê
+        $stats = [
+            'students' => $this->userModel->countByRole(0),
+            'instructors' => $this->userModel->countByRole(1),
+            'courses' => $this->userModel->countTotalCourses(),
+            'enrollments' => $this->userModel->countTotalEnrollments()
+        ];
+
+        $css_files = ['admin.css'];
+
+        require_once 'views/layouts/header.php';
+        require_once 'views/layouts/sidebar.php'; // Lưu ý: Sidebar cần hiển thị menu Admin
+        require_once 'views/admin/reports/statistics.php';
+        require_once 'views/layouts/footer.php';
+    }
+
+    // Quản lý Users: Danh sách, Tìm kiếm, Phân trang
+    public function users() {
+        $this->requireAdmin();
+
+        $limit = 10;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+        $keyword = isset($_GET['search']) ? trim($_GET['search']) : "";
+
+        $users = $this->userModel->getAll($limit, $offset, $keyword);
+        $totalUsers = $this->userModel->countAll($keyword);
+        $totalPages = ceil($totalUsers / $limit);
+
+        $css_files = ['admin.css'];
+        
+        require_once 'views/layouts/header.php';
+        require_once 'views/layouts/sidebar.php';
+        require_once 'views/admin/users/manage.php';
+        require_once 'views/layouts/footer.php';
+    }
+
+    public function pending_courses() {
+    $this->requireAdmin();
+    
+    // Gọi Model lấy các khóa pending
+    $pendingCourses = $this->courseModel->getPendingCourses();
+    
+    // Load View
+    require 'views/admin/courses/pending.php'; 
+    }
+
+    // Xử lý hành động Duyệt/Từ chối
+    public function approve_course() {
+        $this->requireAdmin();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $action = $_POST['action']; // 'approve' hoặc 'reject'
+            
+            $status = ($action === 'approve') ? 'approved' : 'rejected';
+            
+            if ($this->courseModel->updateStatus($id, $status)) {
+                $_SESSION['success'] = ($status == 'approved') ? "Đã duyệt khóa học." : "Đã từ chối khóa học.";
+            } else {
+                $_SESSION['error'] = "Có lỗi xảy ra.";
+            }
+        }
+        header("Location: index.php?controller=admin&action=pending_courses");
+        exit;
+    }
+
+    // Action: Kích hoạt / Vô hiệu hóa User
+    public function toggle_status() {
+        $this->requireAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // CSRF Check (Giả sử bạn đã có hàm checkToken)
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                die("CSRF Failed");
+            }
+
+            $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+            $status = isset($_POST['status']) ? (int)$_POST['status'] : 0; // 0 hoặc 1
+
+            // Không cho phép tự khóa chính mình
+            if ($id == $_SESSION['user']['id']) {
+                $_SESSION['error'] = "Bạn không thể tự vô hiệu hóa tài khoản admin của mình.";
+            } else {
+                if ($this->userModel->toggleStatus($id, $status)) {
+                    $msg = $status == 1 ? "Đã kích hoạt người dùng." : "Đã vô hiệu hóa người dùng.";
+                    $_SESSION['success'] = $msg;
+                } else {
+                    $_SESSION['error'] = "Lỗi hệ thống.";
+                }
+            }
+        }
+        header("Location: index.php?controller=admin&action=users");
+        exit;
+    }
+
+    // Helper: Kiểm tra quyền Admin (Role = 2)
+    private function requireAdmin() {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 2) {
+            $_SESSION['error'] = "Bạn không có quyền truy cập trang quản trị.";
+            header("Location: index.php");
+            exit;
+        }
     }
 
     /**
